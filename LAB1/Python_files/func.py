@@ -96,3 +96,15 @@ def durbin(data, x, y):
     dw_stat = durbin_watson(residuals_sorted)
     return dw_stat
 
+def remove_outliers_iqr(df, column, factor=1.5):
+    q1 = df[column].quantile(0.25)
+    q3 = df[column].quantile(0.75)
+    iqr = q3 - q1
+    lower_bound = q1 - factor * iqr
+    upper_bound = q3 + factor * iqr
+
+    mask = (df[column] >= lower_bound) & (df[column] <= upper_bound)
+    print(f"Удалено {len(df) - mask.sum()} выбросов из '{column}' "
+          f"(границы: [{lower_bound:.1f}, {upper_bound:.1f}])")
+
+    return df[mask].reset_index(drop=True)
