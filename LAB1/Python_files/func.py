@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
+from statsmodels.stats.stattools import durbin_watson
 from scipy import stats
 
 
@@ -67,3 +68,30 @@ def plotic(y_test_p, y_pred_p, y_test_m, y_pred_m):
     ax[1,1].set_xlabel('Порядковый номер')
     ax[1,1].set_ylabel('Остаток')
     plt.tight_layout()
+
+def kstest(data):
+    return stats.kstest(
+        data,
+        stats.norm.cdf,
+        args=(
+            data.mean(), 
+            data.std(ddof=1)
+        )
+    )
+
+def kstest_decision(test):
+    if test.pvalue < 0.05:
+        dec = 'normal'
+    else:
+        dec = 'non-normal'
+    return dec
+
+def durbin(data, x, y):
+    df_sorted = data.sort_values([x][0]).reset_index(drop=True)
+    x_axis = df_sorted[x]
+    y_axis = df_sorted[y]
+    multi_model = LinearRegression().fit(x_axis, y_axis)
+    y_sorted = multi_model.predict(x_axis)
+    residuals_sorted = y_axis - y_sorted
+    dw_stat = durbin_watson(residuals_sorted)
+    return dw_stat
