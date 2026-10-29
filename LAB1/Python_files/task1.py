@@ -18,7 +18,7 @@ print(socr_df.head())
 draw_tukey_diag(
     iris_df, 
     'target', 
-    'petal length (cm)', 
+    'sepal length (cm)', 
     'Диаграмма Тьюки (iris)'
 )
 plt.show()
