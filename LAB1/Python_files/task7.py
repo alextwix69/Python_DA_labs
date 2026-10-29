@@ -17,7 +17,11 @@ from task2 import (
     r2_multi_iris
 )
 
-clean_iris = remove_outliers_iqr(iris_df, 'sepal width (cm)')
+clean_iris = pd.concat(
+    [remove_outliers_iqr(group, 'sepal length (cm)')
+     for _, group in iris_df.groupby('target')],
+    ignore_index=True
+)
 
 x_train_pair, x_test_pair, y_train_pair, y_test_pair = train_test_split(
     clean_iris[["target"]],
