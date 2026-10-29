@@ -95,3 +95,4 @@ def durbin(data, x, y):
     residuals_sorted = y_axis - y_sorted
     dw_stat = durbin_watson(residuals_sorted)
     return dw_stat
+
