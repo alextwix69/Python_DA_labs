@@ -80,7 +80,7 @@ def kstest(data):
     )
 
 def kstest_decision(test):
-    if test.pvalue < 0.05:
+    if test.pvalue > 0.05:
         dec = 'normal'
     else:
         dec = 'non-normal'
